@@ -1,5 +1,6 @@
 package de.datenkollektiv.sandbox.data.exist.book;
 
+import de.datenkollektiv.sandbox.data.exist.AbstractExistRepositoryConfiguration;
 import de.datenkollektiv.sandbox.data.xml.SimpleXQJRepository;
 import de.datenkollektiv.sandbox.data.xml.XQJOperations;
 import de.datenkollektiv.sandbox.data.xml.util.XQItems;

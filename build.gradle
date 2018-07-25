@@ -28,10 +28,10 @@ dependencies {
     implementation "org.slf4j:slf4j-api:$slf4jApiVersion"
     implementation "javax.xml.xquery:xqj-api:$xqjApiVersion"
     runtime group: 'com.xqj2', name: 'xqj2', version: '0.2.0'
+    implementation name: 'exist-xqj-api-1.0.1'
 
     implementation "org.springframework:spring-context:$springFrameworkVersion"
     implementation "org.springframework:spring-tx:$springFrameworkVersion"
-//    implementation "org.springframework:spring-core:$springFrameworkVersion"
     implementation "org.springframework:spring-oxm:$springFrameworkVersion"
     implementation "org.springframework.data:spring-data-commons:$springDataCommonsVersion"
 
@@ -44,9 +44,6 @@ dependencies {
     testImplementation "org.springframework:spring-test:$springFrameworkVersion"
 
     testImplementation "commons-io:commons-io:2.6"
-
-    // lib folder - eXist tests
-    testImplementation name: 'exist-xqj-api-1.0.1'
 }
 
 test {
