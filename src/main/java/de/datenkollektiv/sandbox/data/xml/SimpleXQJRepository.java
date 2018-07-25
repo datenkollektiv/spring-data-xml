@@ -22,6 +22,8 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
 
     private static Logger LOG = LoggerFactory.getLogger(SimpleXQJRepository.class);
 
+    protected static final String DATA = "data";
+
     private final XMLEntityInformation<T> entityInformation;
     private final XQJOperations xqjOperations;
     private final Marshaller marshaller;
@@ -29,8 +31,8 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
 
     private Converter<XQItem, T> toEntityConverter;
 
-    private String rootElementName;
-    private String collectionName;
+    protected String rootElementName;
+    protected String collectionName;
 
     public void setToEntityConverter(Converter<XQItem, T> toEntityConverter) {
         this.toEntityConverter = toEntityConverter;
@@ -52,7 +54,7 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
         this.toEntityConverter = toEntityConverter;
 
         this.rootElementName = entityInformation.getJavaType().getSimpleName().toLowerCase();
-        this.collectionName = "data/" + rootElementName;
+        this.collectionName = DATA + "/" + rootElementName;
 
         this.toDocumentConverter = entity -> {
             DOMResult result = new DOMResult();

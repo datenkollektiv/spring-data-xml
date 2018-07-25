@@ -1,7 +1,5 @@
 package de.datenkollektiv.sandbox.data.exist;
 
-import de.datenkollektiv.sandbox.data.exist.ExistTemplate;
-import de.datenkollektiv.sandbox.data.xml.XQJOperations;
 import net.xqj.exist.ExistXQDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +9,7 @@ import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQException;
 
 @Configuration
-public class AbstractExistRepositoryConfiguration {
+public class ExistTemplateConfiguration {
 
     @Value("${exist.datasource.server-name:localhost}")
     private String serverName;
@@ -36,7 +34,7 @@ public class AbstractExistRepositoryConfiguration {
     }
 
     @Bean
-    XQJOperations existTemplate(XQDataSource xqDataSource) {
+    ExistTemplate existTemplate(XQDataSource xqDataSource) {
         return new ExistTemplate(xqDataSource);
     }
 

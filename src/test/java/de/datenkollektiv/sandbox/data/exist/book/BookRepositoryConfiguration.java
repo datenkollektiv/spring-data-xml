@@ -1,8 +1,8 @@
 package de.datenkollektiv.sandbox.data.exist.book;
 
-import de.datenkollektiv.sandbox.data.exist.AbstractExistRepositoryConfiguration;
-import de.datenkollektiv.sandbox.data.xml.SimpleXQJRepository;
-import de.datenkollektiv.sandbox.data.xml.XQJOperations;
+import de.datenkollektiv.sandbox.data.exist.ExistTemplateConfiguration;
+import de.datenkollektiv.sandbox.data.exist.ExistTemplate;
+import de.datenkollektiv.sandbox.data.exist.ExistXQJRepository;
 import de.datenkollektiv.sandbox.data.xml.util.XQItems;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
@@ -12,7 +12,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.xquery.XQItem;
 
-public class BookRepositoryConfiguration extends AbstractExistRepositoryConfiguration {
+public class BookRepositoryConfiguration extends ExistTemplateConfiguration {
 
     @Bean
     Marshaller marshaller() {
@@ -27,9 +27,9 @@ public class BookRepositoryConfiguration extends AbstractExistRepositoryConfigur
     }
 
     @Bean
-    SimpleXQJRepository<Book> repository(XQJOperations xqjOperations,
+    ExistXQJRepository<Book> repository(ExistTemplate existTemplate,
                                          Marshaller marshaller,
                                          Converter<XQItem, Book> toEntityConverter) {
-        return new SimpleXQJRepository<>(new BookEntityInformation(), xqjOperations, marshaller, toEntityConverter);
+        return new ExistXQJRepository<>(new BookEntityInformation(), existTemplate, marshaller, toEntityConverter);
     }
 }

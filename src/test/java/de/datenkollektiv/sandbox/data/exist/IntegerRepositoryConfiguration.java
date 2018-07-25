@@ -11,7 +11,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import javax.xml.xquery.XQItem;
 
-public class IntegerRepositoryConfiguration extends AbstractExistRepositoryConfiguration {
+public class IntegerRepositoryConfiguration extends ExistTemplateConfiguration {
 
     @Bean
     Marshaller marshaller() {
