@@ -51,8 +51,6 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
         this.marshaller = marshaller;
         this.unmarshaller = unmarshaller;
 
-        this.collectionName = DATA + "/" + rootElementName;
-
         this.toDocumentConverter = entity -> {
             DOMResult result = new DOMResult();
             try {
@@ -71,6 +69,7 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
             this.rootElementName = entityInformation.getJavaType().getSimpleName().toLowerCase();
             LOG.info("Failed to derive root element from class. Using '" + this.rootElementName + "'.");
         }
+        this.collectionName = DATA + "/" + rootElementName;
     }
 
     @Override
