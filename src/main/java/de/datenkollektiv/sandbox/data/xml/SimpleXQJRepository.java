@@ -53,7 +53,6 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
         this.marshaller = marshaller;
         this.toEntityConverter = toEntityConverter;
 
-        this.rootElementName = entityInformation.getJavaType().getSimpleName().toLowerCase();
         this.collectionName = DATA + "/" + rootElementName;
 
         this.toDocumentConverter = entity -> {
@@ -65,6 +64,15 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
             }
             return (Document) result.getNode();
         };
+
+        try {
+            Document target = this.toDocumentConverter.convert(entityInformation.getJavaType().newInstance());
+            this.rootElementName = target.getDocumentElement().getLocalName();
+            LOG.debug("Detected root element name '"  + this.rootElementName + "'.");
+        } catch (InstantiationException | IllegalAccessException ignore) {
+            this.rootElementName = entityInformation.getJavaType().getSimpleName().toLowerCase();
+            LOG.info("Failed to derive root element from class. Using '"  + this.rootElementName + "'.");
+        }
     }
 
     @Override
