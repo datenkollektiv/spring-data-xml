@@ -11,4 +11,6 @@ interface XQJRepository<T> extends CrudRepository<T, String> {
     Stream<T> execute(String xquery);
 
     Stream<T> execute(String xquery, VarBinder... varBinder);
+
+    Stream<T> findWithFilter(String filter);
 }

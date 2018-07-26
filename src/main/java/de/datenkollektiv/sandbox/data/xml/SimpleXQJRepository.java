@@ -86,6 +86,11 @@ public class SimpleXQJRepository<T> implements XQJRepository<T> {
     }
 
     @Override
+    public Stream<T> findWithFilter(String filter) {
+        return xqjOperations.execute("collection('" + collectionName + "')/" + rootElementName + filter).map(this::toEntity);
+    }
+
+    @Override
     public <S extends T> S save(S entity) {
         String id = this.entityInformation.getId(entity);
         Assert.notNull(id, "ID must be non null.");

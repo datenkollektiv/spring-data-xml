@@ -16,9 +16,9 @@ import java.util.stream.Stream;
 
 import static java.lang.Double.NaN;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = BookRepositoryConfiguration.class)
@@ -45,9 +45,9 @@ class BookCrudRepositoryTests {
                 book("9780735213180", "The Immortalists", "Chloe Benjamin")
         ).collect(toList()));
 
-        MatcherAssert.assertThat(books, iterableWithSize(3));
+        assertThat(books, iterableWithSize(3));
 
-        MatcherAssert.assertThat(books, everyItem(
+        assertThat(books, everyItem(
                 hasProperty("year", equalTo(2018))
         ));
     }
@@ -68,7 +68,20 @@ class BookCrudRepositoryTests {
 
         assertTrue(actual.isPresent());
 
-        Assertions.assertEquals("Madeline Miller", actual.get().getAuthor());
+        assertEquals("Madeline Miller", actual.get().getAuthor());
+    }
+
+    @Test
+    void shouldFindWithFilter() {
+        Book book = book("9780316556347", "Circe", "Madeline Miller");
+        repository.save(book);
+
+        Stream<Book> actual = repository.findWithFilter("[title='Circe']");
+
+        Optional<Book> first = actual.findFirst();
+
+        assertTrue(first.isPresent());
+        assertEquals("Madeline Miller", first.get().getAuthor());
     }
 
     @Test
@@ -77,23 +90,23 @@ class BookCrudRepositoryTests {
             repository.deleteById(THE_OUTSIDER_ISBN_13);
         }
 
-        Assertions.assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
 
         repository.save(book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King"));
 
-        Assertions.assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
     }
 
     @Test
     void shouldFindAll() {
         Iterable<Book> books = repository.findAll();
 
-        MatcherAssert.assertThat(books, iterableWithSize((int) repository.count()));
+        assertThat(books, iterableWithSize((int) repository.count()));
     }
 
     @Test
     void findAllByIdShouldFailWithBogusId() {
-        Assertions.assertEquals(0, repository.findAllById(Collections.singleton("foo_bar_baz")).size());
+        assertEquals(0, repository.findAllById(Collections.singleton("foo_bar_baz")).size());
     }
 
     @Test
@@ -104,37 +117,37 @@ class BookCrudRepositoryTests {
                 book(THE_IMMORTALISTS_ISBN_13, "The Immortalists", "Chloe Benjamin")
         ).collect(toList()));
 
-        MatcherAssert.assertThat(repository.findAllById(Collections.singleton(THE_GREAT_ALONE_ISBN_13)), iterableWithSize(1));
-        MatcherAssert.assertThat(repository.findAllById(Arrays.asList(THE_GREAT_ALONE_ISBN_13, THE_IMMORTALISTS_ISBN_13)), iterableWithSize(2));
+        assertThat(repository.findAllById(Collections.singleton(THE_GREAT_ALONE_ISBN_13)), iterableWithSize(1));
+        assertThat(repository.findAllById(Arrays.asList(THE_GREAT_ALONE_ISBN_13, THE_IMMORTALISTS_ISBN_13)), iterableWithSize(2));
     }
 
     @Test
     void shouldDeleteById() {
         repository.save(book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King"));
-        Assertions.assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
 
         repository.deleteById(THE_OUTSIDER_ISBN_13);
-        Assertions.assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
     }
 
     @Test
     void shouldDeleteByEntity() {
         Book book = book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King");
         repository.save(book);
-        Assertions.assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
 
         repository.delete(book);
-        Assertions.assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
     }
 
     @Test
     void shouldDeleteAll() {
         repository.save(book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King"));
-        Assertions.assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
 
         repository.deleteAll();
 
-        Assertions.assertEquals(0, repository.count());
+        assertEquals(0, repository.count());
     }
 
     @Test
@@ -144,13 +157,13 @@ class BookCrudRepositoryTests {
         Book inTheDark = book(IN_THE_DARK_ISBN_13, "In a Dark, Dark Wood", "Ruth Ware");
         repository.save(inTheDark);
 
-        Assertions.assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
-        Assertions.assertTrue(repository.existsById(IN_THE_DARK_ISBN_13));
+        assertTrue(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertTrue(repository.existsById(IN_THE_DARK_ISBN_13));
 
         repository.deleteAll(Arrays.asList(theOutsider, inTheDark));
 
-        Assertions.assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
-        Assertions.assertFalse(repository.existsById(IN_THE_DARK_ISBN_13));
+        assertFalse(repository.existsById(THE_OUTSIDER_ISBN_13));
+        assertFalse(repository.existsById(IN_THE_DARK_ISBN_13));
 
     }
 
@@ -164,7 +177,7 @@ class BookCrudRepositoryTests {
 
         repository.save(book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King"));
 
-        Assertions.assertEquals(current + 1, repository.count());
+        assertEquals(current + 1, repository.count());
     }
 
     private static Book book(String isbn13, String title, String author) {
