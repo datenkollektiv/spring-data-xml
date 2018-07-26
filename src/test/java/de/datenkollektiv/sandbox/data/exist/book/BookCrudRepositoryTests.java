@@ -1,8 +1,6 @@
 package de.datenkollektiv.sandbox.data.exist.book;
 
 import de.datenkollektiv.sandbox.data.xml.SimpleXQJRepository;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -178,6 +176,36 @@ class BookCrudRepositoryTests {
         repository.save(book(THE_OUTSIDER_ISBN_13, "The Outsider", "Stephen King"));
 
         assertEquals(current + 1, repository.count());
+    }
+
+    @Test
+    void shouldFindAllTitlesWithExplicitConversionToString() {
+        repository.deleteAll();
+
+        repository.saveAll(Stream.of(
+                book(THE_GREAT_ALONE_ISBN_13, "The Great Alone", "Kristin Hannah"),
+                book(IN_THE_DARK_ISBN_13, "In a Dark, Dark Wood", "Ruth Ware"),
+                book(THE_IMMORTALISTS_ISBN_13, "The Immortalists", "Chloe Benjamin")
+        ).collect(toList()));
+
+        Stream<String> explicit = repository.queryInCollectionForStream("//title/text()/xs:string(.)", String.class);
+        assertThat(explicit.toArray(), arrayContainingInAnyOrder("The Great Alone",
+                "In a Dark, Dark Wood", "The Immortalists"));
+    }
+
+    @Test
+    void shouldFindAllTitlesWithImplicitConversionToString() {
+        repository.deleteAll();
+
+        repository.saveAll(Stream.of(
+                book(THE_GREAT_ALONE_ISBN_13, "The Great Alone", "Kristin Hannah"),
+                book(IN_THE_DARK_ISBN_13, "In a Dark, Dark Wood", "Ruth Ware"),
+                book(THE_IMMORTALISTS_ISBN_13, "The Immortalists", "Chloe Benjamin")
+        ).collect(toList()));
+
+        Stream<String> explicit = repository.queryInCollectionForStream("//title", String.class);
+        assertThat(explicit.toArray(), arrayContainingInAnyOrder("The Great Alone",
+                "In a Dark, Dark Wood", "The Immortalists"));
     }
 
     private static Book book(String isbn13, String title, String author) {
