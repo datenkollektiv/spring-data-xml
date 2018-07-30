@@ -28,7 +28,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:$slf4jApiVersion"
     implementation "javax.xml.xquery:xqj-api:$xqjApiVersion"
     runtime group: 'com.xqj2', name: 'xqj2', version: '0.2.0'
-    implementation name: 'exist-xqj-api-1.0.1'
+    implementation group: 'net.xqj', name: 'exist-xqj-api-1.0.1'
 
     implementation "org.springframework:spring-context:$springFrameworkVersion"
     implementation "org.springframework:spring-tx:$springFrameworkVersion"
