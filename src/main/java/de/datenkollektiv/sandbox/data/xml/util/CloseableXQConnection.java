@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.xquery.*;
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class CloseableXQConnection implements Closeable {
 
     public Stream<XQItem> items(String xquery, VarBinder... varBinder) throws XQException {
         XQPreparedExpression preparedExpression = xqConnection.prepareExpression(xquery);
-        for (VarBinder binder: varBinder) {
+        for (VarBinder binder : varBinder) {
             binder.bindVariables(preparedExpression);
         }
         XQResultSequence resultSequence = preparedExpression.executeQuery();
